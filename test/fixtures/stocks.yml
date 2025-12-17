@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quantity: 1
+  expiration_date: 2025-12-17
+  user: one
+  ingredient: one
+
+two:
+  quantity: 1
+  expiration_date: 2025-12-17
+  user: two
+  ingredient: two
