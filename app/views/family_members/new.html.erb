@@ -1,2 +1,25 @@
-<h1>FamilyMembers#new</h1>
-<p>Find me in app/views/family_members/new.html.erb</p>
+<h1>家族情報の登録・編集</h1>
+
+<%= form_with model: @family_member, local: true do |f| %>
+  <div>
+    <%= f.label :name, "名前（呼び名）" %><br>
+    <%= f.text_field :name, placeholder: "ママ、長男など" %>
+  </div>
+
+  <div>
+    <%= f.label :status, "現在の状態" %><br>
+    <small>※ここに入力した内容がAIに伝わります（例：授乳中、貧血気味、離乳食後期）</small><br>
+    <%= f.text_field :status %>
+  </div>
+
+  <div>
+    <%= f.label :allergy_info, "アレルギー・苦手なもの" %><br>
+    <%= f.text_area :allergy_info, placeholder: "卵、そば、ピーマンなど" %>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <%= f.submit "保存する" %>
+  </div>
+<% end %>
+
+<%= link_to "戻る", family_members_path %>
