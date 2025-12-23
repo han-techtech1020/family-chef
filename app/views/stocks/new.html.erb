@@ -1,2 +1,36 @@
-<h1>Stocks#new</h1>
-<p>Find me in app/views/stocks/new.html.erb</p>
+<h1>食材を登録する</h1>
+
+<%= form_with model: @stock, local: true do |f| %>
+  <!-- エラーメッセージ表示（簡易版） -->
+  <% if @stock.errors.any? %>
+    <div style="color: red;">
+      <ul>
+        <% @stock.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :ingredient_id, "食材を選ぶ" %><br>
+    <!-- 食材マスタから選択（保存するのはID、表示するのは名前） -->
+    <%= f.collection_select :ingredient_id, @ingredients, :id, :name, prompt: "選択してください" %>
+  </div>
+
+  <div>
+    <%= f.label :quantity, "数量" %><br>
+    <%= f.number_field :quantity %>
+  </div>
+
+  <div>
+    <%= f.label :expiration_date, "賞味期限" %><br>
+    <%= f.date_field :expiration_date %>
+  </div>
+
+  <div>
+    <%= f.submit "冷蔵庫に入れる" %>
+  </div>
+<% end %>
+
+<%= link_to "戻る", stocks_path %>

@@ -1,2 +1,29 @@
-<h1>Stocks#index</h1>
-<p>Find me in app/views/stocks/index.html.erb</p>
+<h1>冷蔵庫の中身</h1>
+
+<%= link_to "＋ 食材を追加する", new_stock_path %>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>食材名</th>
+      <th>カテゴリー</th>
+      <th>数量</th>
+      <th>賞味期限</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stocks.each do |stock| %>
+      <tr>
+        <!-- ここで N+1問題対策が効きます（stock.ingredient） -->
+        <td><%= stock.ingredient.name %></td>
+        <td><%= stock.ingredient.category %></td>
+        <td><%= stock.quantity %></td>
+        <td><%= stock.expiration_date %></td>
+        <td>
+          <%= link_to "削除（使い切った）", stock_path(stock), data: { turbo_method: :delete } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
