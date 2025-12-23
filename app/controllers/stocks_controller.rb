@@ -28,4 +28,11 @@ class StocksController < ApplicationController
     stock.destroy
     redirect_to stocks_path, notice: "食材を使い切りました"
   end
+  
+  private
+
+  def stock_params
+    # ingredient_id（食材のID）と quantity（個数）, expiration_date（期限） を許可
+    params.require(:stock).permit(:ingredient_id, :quantity, :expiration_date)
+  end
 end
