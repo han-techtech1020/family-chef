@@ -1,4 +1,7 @@
 class StocksController < ApplicationController
+   # ログインしていないと見れないようにする（Deviseの機能）
+  before_action :authenticate_user!
+  
   def index
     # N+1問題対策：食材データも一緒に取ってくる！
     @stocks = current_user.stocks.includes(:ingredient).order(expiration_date: :asc)
@@ -28,7 +31,7 @@ class StocksController < ApplicationController
     stock.destroy
     redirect_to stocks_path, notice: "食材を使い切りました"
   end
-  
+
   private
 
   def stock_params
