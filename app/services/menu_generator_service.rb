@@ -42,7 +42,7 @@ class MenuGeneratorService
     # 4. APIへの送信（Request）
     response = @client.chat(
       parameters: {
-        model: "gpt-3.5-turbo", # または gpt-4（賢いが高い）
+        model: "gpt-4o-mini", # または gpt-4（賢いが高い）
         messages: [{ role: "user", content: prompt }],
         temperature: 0.7,
       }
