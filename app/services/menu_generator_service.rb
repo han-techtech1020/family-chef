@@ -7,6 +7,10 @@ class MenuGeneratorService
   def call
     # 1. ユーザーの在庫情報を取得（賞味期限が近い順）
     stocks = @user.stocks.includes(:ingredient).order(:expiration_date).limit(10)
+
+    # Rubyのデータを「文字列」に変換
+    # Before: [<Stock id:1...>, <Stock id:2...>] （プログラム用データ）
+    # After: "人参 (2個) - 期限:2024-01-01, 豚肉 (300g) - 期限:2024-01-03" （AIが読める文章）
     stock_list = stocks.map { |s| "#{s.ingredient.name} (#{s.quantity}個) - 期限:#{s.expiration_date}" }.join(", ")
 
     # 2. 家族の情報を取得
@@ -35,16 +39,16 @@ class MenuGeneratorService
       【説明】なぜこの料理にしたか（栄養と節約の観点から）
     TEXT
 
-    # 4. APIを叩く
+    # 4. APIへの送信（Request）
     response = @client.chat(
       parameters: {
-        model: "gpt-3.5-turbo", # または gpt-4
+        model: "gpt-3.5-turbo", # または gpt-4（賢いが高い）
         messages: [{ role: "user", content: prompt }],
         temperature: 0.7,
       }
     )
 
-    # 5. 返事を返す
+    # 5. 返事の取り出し（Response）
     response.dig("choices", 0, "message", "content")
   end
 end
