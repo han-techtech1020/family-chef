@@ -1,0 +1,12 @@
+<h1>AIシェフの提案</h1>
+
+<div style="background-color: #f0f0f0; padding: 20px; border-radius: 8px;">
+  <h2>提案された献立</h2>
+  <!-- AIの回答は改行が含まれるので simple_format を使う -->
+  <%= simple_format(@suggestion) %>
+</div>
+
+<div style="margin-top: 20px;">
+  <%= link_to "別の案を考える（再生成）", generate_recipes_path, class: "btn" %> | 
+  <%= link_to "冷蔵庫に戻る", root_path %>
+</div>
