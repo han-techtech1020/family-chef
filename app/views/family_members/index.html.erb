@@ -1,30 +1,47 @@
-<h1>家族の体調・ステータス管理</h1>
-
-<div style="margin-bottom: 20px;">
-  <%= link_to "🏠 冷蔵庫に戻る", root_path %> | 
-  <%= link_to "＋ 家族を追加する", new_family_member_path %>
+<div class="flex justify-between items-end mb-4">
+  <h2 class="text-2xl font-bold text-gray-700">家族のステータス</h2>
+  <%= link_to "+ 家族追加", new_family_member_path, class: "bg-orange-500 text-white px-4 py-2 rounded-full shadow hover:bg-orange-600 text-sm font-bold" %>
 </div>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>現在の状態（AIへの指示）</th>
-      <th>アレルギー情報</th>
-      <th>操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @family_members.each do |member| %>
-      <tr>
-        <td><%= member.name %></td>
-        <td><%= member.status %></td>
-        <td><%= member.allergy_info %></td>
-        <td>
-          <%= link_to "編集", edit_family_member_path(member) %> |
-          <%= link_to "削除", family_member_path(member), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="space-y-4">
+  <% @family_members.each do |member| %>
+    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 relative">
+      
+      <!-- 名前と編集ボタン -->
+      <div class="flex justify-between items-start mb-2">
+        <h3 class="text-lg font-bold text-gray-800 flex items-center">
+          <span class="mr-2">👤</span> <%= member.name %>
+        </h3>
+        <div class="flex space-x-3 text-sm">
+          <%= link_to "編集", edit_family_member_path(member), class: "text-orange-500 hover:text-orange-700" %>
+          <%= link_to "削除", family_member_path(member), data: { turbo_method: :delete, turbo_confirm: "削除しますか？" }, class: "text-gray-400 hover:text-red-500" %>
+        </div>
+      </div>
+
+      <!-- ステータス（タグ風） -->
+      <div class="mb-3">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">現在の状態</span>
+        <div class="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-sm mt-1 inline-block border border-orange-100">
+          <%= member.status %>
+        </div>
+      </div>
+
+      <!-- アレルギー -->
+      <% if member.allergy_info.present? %>
+        <div>
+          <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">アレルギー・苦手</span>
+          <p class="text-sm text-red-500 mt-1">⚠️ <%= member.allergy_info %></p>
+        </div>
+      <% end %>
+
+    </div>
+  <% end %>
+
+  <% if @family_members.empty? %>
+    <div class="text-center py-10 text-gray-400">
+      <p class="text-4xl mb-2">👨‍👩‍👧</p>
+      <p>家族情報がありません</p>
+      <p class="text-sm">「＋ 家族追加」から登録してください</p>
+    </div>
+  <% end %>
+</div>

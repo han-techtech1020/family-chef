@@ -1,16 +1,31 @@
-<h1>献立の履歴</h1>
+<div class="mb-4">
+  <h2 class="text-2xl font-bold text-gray-700">献立の履歴 📜</h2>
+</div>
 
-<%= link_to "🏠 冷蔵庫に戻る", root_path %> |
-<%= link_to "🤖 新しい献立をAIに聞く", generate_recipes_path %>
-
-<div style="margin-top: 20px;">
+<div class="space-y-6">
   <% @recipes.each do |recipe| %>
-    <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
-      <h3><%= recipe.title %></h3>
-      <p style="font-size: 0.8em; color: gray;"><%= recipe.created_at.strftime('%Y/%m/%d %H:%M') %></p>
+    <div class="bg-white rounded-xl shadow-sm border-l-4 border-orange-400 overflow-hidden">
       
-      <!-- 内容を表示 -->
-      <%= simple_format(recipe.description) %>
+      <!-- タイトルと日付 -->
+      <div class="bg-orange-50 p-3 flex justify-between items-center border-b border-orange-100">
+        <h3 class="font-bold text-gray-800 text-sm truncate pr-2"><%= recipe.title %></h3>
+        <span class="text-xs text-gray-500 whitespace-nowrap"><%= recipe.created_at.strftime('%m/%d %H:%M') %></span>
+      </div>
+
+      <!-- 内容 -->
+      <div class="p-4 text-sm text-gray-700 leading-relaxed prose prose-orange">
+        <!-- 長い文章を見やすく表示 -->
+        <%= simple_format(recipe.description) %>
+      </div>
+      
+    </div>
+  <% end %>
+
+  <% if @recipes.empty? %>
+    <div class="text-center py-10 text-gray-400">
+      <p class="text-4xl mb-2">🍽️</p>
+      <p>履歴はありません</p>
+      <%= link_to "AIに献立を提案してもらう", generate_recipes_path, class: "text-orange-500 underline mt-2 block" %>
     </div>
   <% end %>
 </div>

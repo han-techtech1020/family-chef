@@ -1,36 +1,44 @@
-<h1>食材を登録する</h1>
+<div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+  <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">🥕 食材を追加</h2>
 
-<%= form_with model: @stock, local: true do |f| %>
-  <!-- エラーメッセージ表示（簡易版） -->
-  <% if @stock.errors.any? %>
-    <div style="color: red;">
-      <ul>
-        <% @stock.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <%= form_with model: @stock, local: true, class: "space-y-5" do |f| %>
+    
+    <!-- エラーメッセージ -->
+    <% if @stock.errors.any? %>
+      <div class="bg-red-50 text-red-600 p-3 rounded-lg text-sm">
+        <ul class="list-disc pl-5">
+          <% @stock.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <!-- 食材選択 -->
+    <div>
+      <%= f.label :ingredient_id, "食材を選ぶ", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.collection_select :ingredient_id, @ingredients, :id, :name, { prompt: "選択してください" }, { class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" } %>
+    </div>
+
+    <!-- 数量 -->
+    <div>
+      <%= f.label :quantity, "数量 (個/g)", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.number_field :quantity, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" %>
+    </div>
+
+    <!-- 賞味期限 -->
+    <div>
+      <%= f.label :expiration_date, "賞味期限", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.date_field :expiration_date, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" %>
+    </div>
+
+    <!-- 送信ボタン -->
+    <div class="pt-4">
+      <%= f.submit "冷蔵庫に入れる", class: "w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-orange-600 transition transform active:scale-95 cursor-pointer" %>
     </div>
   <% end %>
 
-  <div>
-    <%= f.label :ingredient_id, "食材を選ぶ" %><br>
-    <!-- 食材マスタから選択（保存するのはID、表示するのは名前） -->
-    <%= f.collection_select :ingredient_id, @ingredients, :id, :name, prompt: "選択してください" %>
+  <div class="text-center mt-6">
+    <%= link_to "キャンセル", stocks_path, class: "text-gray-400 text-sm hover:text-gray-600" %>
   </div>
-
-  <div>
-    <%= f.label :quantity, "数量" %><br>
-    <%= f.number_field :quantity %>
-  </div>
-
-  <div>
-    <%= f.label :expiration_date, "賞味期限" %><br>
-    <%= f.date_field :expiration_date %>
-  </div>
-
-  <div>
-    <%= f.submit "冷蔵庫に入れる" %>
-  </div>
-<% end %>
-
-<%= link_to "戻る", stocks_path %>
+</div>
