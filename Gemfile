@@ -71,3 +71,4 @@ gem 'devise'
 
 gem 'ruby-openai'
 gem 'dotenv-rails'
+gem "tailwindcss-rails", "~> 4.4"
