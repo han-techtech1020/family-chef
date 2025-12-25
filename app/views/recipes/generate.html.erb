@@ -6,6 +6,18 @@
   <%= simple_format(@suggestion) %>
 </div>
 
+<div style="text-align: center;">
+  <%= form_with model: @recipe, url: recipes_path, local: true do |f| %>
+    <!-- AIの提案文章を、隠しフィールド（hidden_field）として送る -->
+    <%= f.hidden_field :description, value: @suggestion %>
+    
+    <!-- タイトルはとりあえず仮で入れる（後でユーザーが編集できるようにしてもOK） -->
+    <%= f.hidden_field :title, value: "AI提案の献立 (#{Time.now.strftime('%Y/%m/%d')})" %>
+
+    <%= f.submit "この献立を決定（保存）する", class: "btn-primary" %>
+  <% end %>
+</div>
+
 <div style="margin-top: 20px;">
   <%= link_to "別の案を考える（再生成）", generate_recipes_path, class: "btn" %> | 
   <%= link_to "冷蔵庫に戻る", root_path %>
