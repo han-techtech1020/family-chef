@@ -12,4 +12,21 @@ class RecipesController < ApplicationController
     # 画面表示用に、結果を渡す
     render :generate
   end
+
+  def create
+    @recipe = current_user.recipes.new(recipe_params)
+
+    if @recipe.save
+      redirect_to recipes_path, notice: "献立を保存しました！"
+    else
+      # エラー時はトップに戻す（簡易対応）
+      redirect_to root_path, alert: "保存に失敗しました"
+    end
+  end
+
+  private
+
+  def recipe_params
+    params.require(:recipe).permit(:title, :description)
+  end
 end
