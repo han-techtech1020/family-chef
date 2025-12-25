@@ -1,2 +1,16 @@
-<h1>Recipes#index</h1>
-<p>Find me in app/views/recipes/index.html.erb</p>
+<h1>献立の履歴</h1>
+
+<%= link_to "🏠 冷蔵庫に戻る", root_path %> |
+<%= link_to "🤖 新しい献立をAIに聞く", generate_recipes_path %>
+
+<div style="margin-top: 20px;">
+  <% @recipes.each do |recipe| %>
+    <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
+      <h3><%= recipe.title %></h3>
+      <p style="font-size: 0.8em; color: gray;"><%= recipe.created_at.strftime('%Y/%m/%d %H:%M') %></p>
+      
+      <!-- 内容を表示 -->
+      <%= simple_format(recipe.description) %>
+    </div>
+  <% end %>
+</div>
