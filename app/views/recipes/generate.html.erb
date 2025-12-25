@@ -1,24 +1,27 @@
-<h1>AIシェフの提案</h1>
+<h2 class="text-xl font-bold text-gray-700 mb-4 text-center">AIシェフの提案 🍳</h2>
 
-<div style="background-color: #f0f0f0; padding: 20px; border-radius: 8px;">
-  <h2>提案された献立</h2>
-  <!-- AIの回答は改行が含まれるので simple_format を使う -->
-  <%= simple_format(@suggestion) %>
+<!-- AIのフキダシ風デザイン -->
+<div class="flex items-start space-x-3 mb-6">
+  <div class="text-3xl">🤖</div>
+  <div class="bg-white border border-orange-100 p-5 rounded-2xl rounded-tl-none shadow-sm flex-1 text-sm leading-relaxed text-gray-700">
+    <!-- simple_formatだと余白が広すぎる場合があるので、少し調整 -->
+    <div class="prose prose-sm">
+      <%= simple_format(@suggestion) %>
+    </div>
+  </div>
 </div>
 
-<div style="text-align: center;">
+<!-- 保存フォーム -->
+<div class="sticky bottom-24 px-4">
   <%= form_with model: @recipe, url: recipes_path, local: true do |f| %>
-    <!-- AIの提案文章を、隠しフィールド（hidden_field）として送る -->
     <%= f.hidden_field :description, value: @suggestion %>
-    
-    <!-- タイトルはとりあえず仮で入れる（後でユーザーが編集できるようにしてもOK） -->
-    <%= f.hidden_field :title, value: "AI提案の献立 (#{Time.now.strftime('%Y/%m/%d')})" %>
+    <%= f.hidden_field :title, value: "AI提案の献立 (#{Time.now.strftime('%m/%d')})" %>
 
-    <%= f.submit "この献立を保存する", class: "btn-primary" %>
+    <%= f.submit "この献立で決定！(保存)", class: "w-full bg-gradient-to-r from-orange-400 to-orange-600 text-white font-bold py-3 rounded-xl shadow-lg hover:opacity-90 transform transition active:scale-95" %>
   <% end %>
-</div>
 
-<div style="margin-top: 20px;">
-  <%= link_to "別の案を考える（再生成）", generate_recipes_path, class: "btn" %> | 
-  <%= link_to "冷蔵庫に戻る", root_path %>
+  <div class="text-center mt-4 space-x-4">
+    <%= link_to "再生成 🔄", generate_recipes_path, class: "text-sm text-gray-500 hover:text-orange-500" %>
+    <%= link_to "キャンセル", root_path, class: "text-sm text-gray-500 hover:text-gray-800" %>
+  </div>
 </div>
