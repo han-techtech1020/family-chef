@@ -23,10 +23,16 @@
       <!-- 期限と削除 -->
       <div class="text-right">
         <!-- 期限が近いと赤くするロジック（簡易版） -->
-        <% is_expired = stock.expiration_date < Date.today + 3.days %>
-        <p class="text-xs font-bold <%= is_expired ? 'text-red-500' : 'text-green-600' %>">
-          期限: <%= stock.expiration_date.strftime('%m/%d') %>
-        </p>
+       <% if stock.expiration_date.present? %>
+          <!-- 日付がある場合の処理（今まで通り） -->
+          <% is_expired = stock.expiration_date < Date.today + 3.days %>
+          <p class="text-xs font-bold <%= is_expired ? 'text-red-500' : 'text-green-600' %>">
+            期限: <%= stock.expiration_date.strftime('%m/%d') %>
+          </p>
+        <% else %>
+          <!-- 日付がない場合の処理（安全策） -->
+          <p class="text-xs text-gray-400">期限設定なし</p>
+        <% end %>
         
         <%= link_to stock_path(stock), data: { turbo_method: :delete }, class: "text-xs text-gray-300 hover:text-red-500 mt-1 block" do %>
           削除
