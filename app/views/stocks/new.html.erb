@@ -17,7 +17,12 @@
     <!-- 食材選択 -->
     <div>
       <%= f.label :ingredient_id, "食材を選ぶ", class: "block text-sm font-bold text-gray-700 mb-1" %>
-      <%= f.collection_select :ingredient_id, @ingredients, :id, :name, { prompt: "選択してください" }, { class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" } %>
+      <!-- グループ化されたプルダウンを作成 -->
+      <%= f.select :ingredient_id, 
+          grouped_options_for_select(@ingredients.map { |category, ingredients| [category, ingredients.map { |i| [i.name, i.id] }] }), 
+          { prompt: "選択してください" }, 
+          { class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" } 
+      %>
     </div>
 
     <!-- 数量 -->
