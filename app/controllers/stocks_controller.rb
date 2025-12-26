@@ -1,7 +1,9 @@
 class StocksController < ApplicationController
    # ログインしていないと見れないようにする（Deviseの機能）
   before_action :authenticate_user!
-  
+   # update, destroy, edit のときに @stock をセットする
+  before_action :set_stock, only: [:edit, :update, :destroy]
+
   def index
     # N+1問題対策：食材データも一緒に取ってくる！
     @stocks = current_user.stocks.includes(:ingredient).order(expiration_date: :asc)
@@ -26,16 +28,32 @@ class StocksController < ApplicationController
     end
   end
 
+  def edit
+    # @stock は before_action でセット済み
+    # 食材名を表示したいので ingredient も取得
+  end
+
+  def update
+    if @stock.update(stock_params)
+      redirect_to stocks_path, notice: "在庫を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   def destroy
-    stock = current_user.stocks.find(params[:id])
-    stock.destroy
+    @stock.destroy
     redirect_to stocks_path, notice: "食材を使い切りました"
   end
 
   private
 
+  def set_stock
+    @stock = current_user.stocks.find(params[:id])
+  end
+
   def stock_params
-    # ingredient_id（食材のID）と quantity（個数）, expiration_date（期限） を許可
-    params.require(:stock).permit(:ingredient_id, :quantity, :expiration_date)
+    # ingredient_id（食材のID）と quantity（個数）, expiration_date（期限）,storage（保存場所） を許可
+    params.require(:stock).permit(:ingredient_id, :quantity, :expiration_date, :storage)
   end
 end
