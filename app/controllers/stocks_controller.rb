@@ -11,8 +11,9 @@ class StocksController < ApplicationController
 
   def new
     @stock = Stock.new
-    # プルダウンで選べるように、全食材データを取得
-    @ingredients = Ingredient.all
+    # カテゴリーでグループ化して取得
+    # { "野菜" => [人参, 玉ねぎ...], "肉" => [豚肉, 牛肉...] } の形にする
+    @ingredients = Ingredient.all.group_by(&:category)
   end
 
   def create

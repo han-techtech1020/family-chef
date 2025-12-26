@@ -1,0 +1,39 @@
+<div class="bg-white p-6 rounded-xl shadow-sm border border-orange-100">
+  <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">✏️ 在庫の編集</h2>
+
+  <!-- 食材名（変更不可） -->
+  <div class="mb-6 text-center">
+    <span class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-bold">
+      <%= @stock.ingredient.name %>
+    </span>
+  </div>
+
+  <%= form_with model: @stock, local: true, class: "space-y-5" do |f| %>
+    
+    <!-- 数量 -->
+    <div>
+      <%= f.label :quantity, "数量", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.number_field :quantity, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-3" %>
+    </div>
+
+    <!-- 保存場所 -->
+    <div>
+      <%= f.label :storage, "保存場所", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.select :storage, Stock.storages.keys.map { |k| [k == "fridge" ? "冷蔵" : (k == "freezer" ? "冷凍" : "常温"), k] }, {}, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-3" %>
+    </div>
+
+    <!-- 期限 -->
+    <div>
+      <%= f.label :expiration_date, "期限", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.date_field :expiration_date, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-3" %>
+    </div>
+
+    <div class="pt-4">
+      <%= f.submit "更新する", class: "w-full bg-orange-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg hover:bg-orange-600 transition cursor-pointer" %>
+    </div>
+  <% end %>
+
+  <div class="text-center mt-6">
+    <%= link_to "キャンセル", stocks_path, class: "text-gray-400 text-sm hover:text-gray-600" %>
+  </div>
+</div>
