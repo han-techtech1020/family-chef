@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_17_145510) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_26_024237) do
   create_table "family_members", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "status"
@@ -55,6 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_17_145510) do
     t.bigint "ingredient_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "storage"
     t.index ["ingredient_id"], name: "index_stocks_on_ingredient_id"
     t.index ["user_id"], name: "index_stocks_on_user_id"
   end

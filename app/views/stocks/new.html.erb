@@ -26,6 +26,12 @@
       <%= f.number_field :quantity, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 focus:ring-opacity-50 py-3" %>
     </div>
 
+    <!-- 保存場所 -->
+    <div>
+      <%= f.label :storage, "保存場所", class: "block text-sm font-bold text-gray-700 mb-1" %>
+      <%= f.select :storage, Stock.storages.keys.map { |k| [k == "fridge" ? "冷蔵" : (k == "freezer" ? "冷凍" : "常温"), k] }, {}, class: "w-full border-gray-300 rounded-lg shadow-sm focus:border-orange-500 focus:ring focus:ring-orange-200 py-3" %>
+    </div>
+
     <!-- 賞味期限 -->
     <div>
       <%= f.label :expiration_date, "賞味期限", class: "block text-sm font-bold text-gray-700 mb-1" %>
