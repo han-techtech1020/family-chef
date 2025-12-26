@@ -5,8 +5,13 @@ class StocksController < ApplicationController
   before_action :set_stock, only: [:edit, :update, :destroy]
 
   def index
-    # N+1問題対策：食材データも一緒に取ってくる！
-    @stocks = current_user.stocks.includes(:ingredient).order(expiration_date: :asc)
+    # 在庫を取得し、さらに「食材のカテゴリー」でグループ化する
+    @grouped_stocks = current_user.stocks.includes(:ingredient)
+                                  .order(:expiration_date)
+                                  .group_by { |stock| stock.ingredient.category }
+                                  
+    # カテゴリーの表示順序を固定したい場合（野菜→肉→魚...）
+    @category_order = ["野菜", "肉", "魚介", "卵・乳製品", "大豆・加工品", "調味料", "乾物・粉類"]
   end
 
   def new

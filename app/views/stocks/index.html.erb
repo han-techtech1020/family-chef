@@ -1,52 +1,67 @@
-<div class="flex justify-between items-end mb-4">
+<div class="flex justify-between items-end mb-6">
   <h2 class="text-2xl font-bold text-gray-700">冷蔵庫の中身</h2>
   <%= link_to "+ 追加", new_stock_path, class: "bg-orange-500 text-white px-4 py-2 rounded-full shadow hover:bg-orange-600 text-sm font-bold" %>
 </div>
 
-<!-- 在庫リスト -->
-<div class="space-y-3">
-  <% @stocks.each do |stock| %>
-    <div class="flex items-center justify-between bg-white border border-gray-100 p-3 rounded-lg shadow-sm hover:shadow-md transition">
+<!-- 在庫がない場合 -->
+<% if @grouped_stocks.empty? %>
+  <div class="text-center py-10 text-gray-400">
+    <p class="text-4xl mb-2">🧊</p>
+    <p>冷蔵庫は空っぽです</p>
+  </div>
+<% else %>
+
+  <!-- カテゴリーごとにループ -->
+  <!-- @category_order にある順序で表示し、その他のカテゴリーは後ろに追加 -->
+  <% (@category_order | @grouped_stocks.keys).each do |category| %>
+    
+    <!-- そのカテゴリーに在庫がある場合のみ表示 -->
+    <% if stocks = @grouped_stocks[category] %>
       
-      <!-- アイコンと名前 -->
-      <div class="flex items-center space-x-3">
-        <div class="bg-orange-100 text-orange-600 p-2 rounded-full">
-          <!-- カテゴリーによってアイコンを変えるロジックを入れるとベストですが、今は共通で -->
-          🍽️
-        </div>
-        <div>
-          <p class="font-bold text-gray-800"><%= stock.ingredient.name %></p>
-          <p class="text-xs text-gray-400"><%= stock.quantity %>個</p>
-        </div>
-      </div>
+      <!-- カテゴリー見出し -->
+      <h3 class="text-sm font-bold text-orange-500 mt-6 mb-2 ml-1 border-b border-orange-200 pb-1">
+        <%= category %>
+      </h3>
 
-      <!-- 期限と削除 -->
-      <div class="text-right">
-        <!-- 期限が近いと赤くするロジック（簡易版） -->
-       <% if stock.expiration_date.present? %>
-          <!-- 日付がある場合の処理（今まで通り） -->
-          <% is_expired = stock.expiration_date < Date.today + 3.days %>
-          <p class="text-xs font-bold <%= is_expired ? 'text-red-500' : 'text-green-600' %>">
-            期限: <%= stock.expiration_date.strftime('%m/%d') %>
-          </p>
-        <% else %>
-          <!-- 日付がない場合の処理（安全策） -->
-          <p class="text-xs text-gray-400">期限設定なし</p>
-        <% end %>
-        
-        <%= link_to stock_path(stock), data: { turbo_method: :delete }, class: "text-xs text-gray-300 hover:text-red-500 mt-1 block" do %>
-          削除
+      <div class="space-y-3">
+        <% stocks.each do |stock| %>
+          <div class="flex items-center justify-between bg-white border border-gray-100 p-3 rounded-lg shadow-sm">
+            
+            <!-- 名前と個数 -->
+            <div class="flex items-center space-x-3">
+              <!-- クリックで編集画面へ -->
+              <%= link_to edit_stock_path(stock), class: "flex items-center space-x-3 group" do %>
+                <div class="bg-orange-50 text-orange-600 p-2 rounded-full group-hover:bg-orange-100 transition">
+                  🍽️
+                </div>
+                <div>
+                  <p class="font-bold text-gray-800 group-hover:text-orange-600 transition"><%= stock.ingredient.name %></p>
+                  <p class="text-xs text-gray-400"><%= stock.quantity %>個 / <%= stock.storage_text %></p>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- 期限と削除 -->
+            <div class="text-right">
+              <% if stock.expiration_date.present? %>
+                <% is_expired = stock.expiration_date < Date.today + 3.days %>
+                <p class="text-xs font-bold <%= is_expired ? 'text-red-500' : 'text-green-600' %>">
+                  <%= stock.expiration_date.strftime('%m/%d') %>まで
+                </p>
+              <% else %>
+                <p class="text-xs text-gray-400">-</p>
+              <% end %>
+              
+              <!-- 削除ボタン（小さく） -->
+              <%= link_to stock_path(stock), data: { turbo_method: :delete }, class: "text-xs text-gray-300 hover:text-red-500 mt-1 block" do %>
+                ×
+              <% end %>
+            </div>
+
+          </div>
         <% end %>
       </div>
-
-    </div>
+    <% end %>
   <% end %>
 
-  <% if @stocks.empty? %>
-    <div class="text-center py-10 text-gray-400">
-      <p class="text-4xl mb-2">🧊</p>
-      <p>冷蔵庫は空っぽです</p>
-      <p class="text-sm">食材を追加してください</p>
-    </div>
-  <% end %>
-</div>
+<% end %>
