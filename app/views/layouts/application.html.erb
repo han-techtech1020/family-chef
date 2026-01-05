@@ -53,10 +53,10 @@
     <% if user_signed_in? %>
       <nav class="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-200 flex justify-around items-end py-2 text-xs text-gray-500 z-50">
         
-        <!-- 1. 冷蔵庫 -->
+        <!-- 1. 食材在庫 -->
         <%= link_to stocks_path, class: "flex flex-col items-center pb-2 w-1/4 hover:text-orange-500 #{current_page?(stocks_path) ? 'text-orange-500 font-bold' : ''}" do %>
           <span class="text-xl mb-1">🥦</span>
-          <span>冷蔵庫</span>
+          <span>食材在庫</span>
         <% end %>
 
         <!-- 2. レシピ -->
