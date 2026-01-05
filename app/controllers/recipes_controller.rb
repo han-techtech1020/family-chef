@@ -5,8 +5,11 @@ class RecipesController < ApplicationController
   end
 
   def generate
-    # AIサービスを呼び出す
-    service = MenuGeneratorService.new(current_user)
+    # フォームから送られてきた "request" というパラメータを取得
+    user_request = params[:user_request]
+
+    # Serviceを呼ぶとき、第2引数として要望を渡す
+    service = MenuGeneratorService.new(current_user, user_request)
     @suggestion = service.call
 
     # 保存フォーム用に空のインスタンスを用意
