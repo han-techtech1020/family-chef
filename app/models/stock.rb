@@ -3,7 +3,7 @@ class Stock < ApplicationRecord
   belongs_to :ingredient
 
   # デフォルトは「冷蔵(fridge)」にしておくと便利
-  enum storage: { fridge: 0, freezer: 1, room: 2 }
+  enum :storage, { fridge: 0, freezer: 1, room: 2 }
 
   # 日本語化のためのメソッド（ビューで使う）
   def storage_text

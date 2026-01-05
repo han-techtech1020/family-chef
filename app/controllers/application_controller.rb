@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-   # Deviseのコントローラーを使う時だけ、パラメータ設定を許可する
+  # Deviseのコントローラーを使う時だけ、パラメータ設定を許可する
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   private

@@ -1,7 +1,7 @@
 class MenuGeneratorService
   def initialize(user)
     @user = user
-    @client = OpenAI::Client.new(access_token: ENV['OPENAI_ACCESS_TOKEN'])
+    @client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_ACCESS_TOKEN', nil))
   end
 
   def call
@@ -44,7 +44,7 @@ class MenuGeneratorService
       parameters: {
         model: "gpt-4o-mini", # または gpt-4（賢いが高い）
         messages: [{ role: "user", content: prompt }],
-        temperature: 0.7,
+        temperature: 0.7
       }
     )
 

@@ -3,15 +3,15 @@ class RecipesController < ApplicationController
   def index
     @recipes = current_user.recipes.order(created_at: :desc)
   end
-  
+
   def generate
     # AIサービスを呼び出す
     service = MenuGeneratorService.new(current_user)
     @suggestion = service.call
 
     # 保存フォーム用に空のインスタンスを用意
-    @recipe = Recipe.new 
-    
+    @recipe = Recipe.new
+
     # 画面表示用に、結果を渡す
     render :generate
   end

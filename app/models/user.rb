@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-   # 「ユーザーは、たくさんの在庫を持っている」
+  # 「ユーザーは、たくさんの在庫を持っている」
   has_many :stocks, dependent: :destroy
   # レシピなども
   has_many :recipes, dependent: :destroy

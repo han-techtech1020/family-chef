@@ -1,0 +1,36 @@
+require:
+  - rubocop-rails
+
+AllCops:
+  # 最新のルールを適用する
+  NewCops: enable
+  # 自動生成されたファイルや、設定ファイルはチェックしない
+  Exclude:
+    - "bin/**/*"
+    - "db/schema.rb"
+    - "db/migrate/**/*"
+    - "node_modules/**/*"
+    - "vendor/**/*"
+    - "config/**/*"
+
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false
+
+# クラスの上のコメント（ドキュメント）を必須にしない
+Style/Documentation:
+  Enabled: false
+
+# 文字列のダブルクォート・シングルクォートを気にしない（お好みで）
+Style/StringLiterals:
+  Enabled: false
+
+# メソッドの行数制限を少し緩める（デフォルトは10行）
+Metrics/MethodLength:
+  Max: 20
+
+# ブロックの行数制限を少し緩める
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*" # テストコードは長くなりがちなので除外
+    - "config/routes.rb" # ルーティングも長くなるので除外
