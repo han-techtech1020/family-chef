@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   # AI提案用のルートを追加
   resources :recipes, only: [:index, :create] do
     collection do
+      get :search   # 入力フォーム画面
       get :generate # カスタムアクション：「AI提案画面」を表示
     end
   end
