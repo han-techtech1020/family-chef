@@ -1,6 +1,7 @@
 class MenuGeneratorService
-  def initialize(user)
+  def initialize(user, user_request = nil)
     @user = user
+    @user_request = user_request
     @client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_ACCESS_TOKEN', nil))
   end
 
@@ -20,16 +21,19 @@ class MenuGeneratorService
     # 3. AIへの命令文（プロンプト）を作成
     prompt = <<~TEXT
       あなたはプロの栄養管理士兼、節約料理研究家です。
-      以下の「冷蔵庫の在庫」と「家族の状況」を考慮して、最適な夕食の献立（主菜・副菜）を1つ提案してください。
+      以下の「食材の在庫」と「家族の状況」を考慮して、最適な夕食の献立（主菜・副菜）を1つ提案してください。
 
-      【冷蔵庫の在庫（賞味期限が近い順）】
+      【食材の在庫（賞味期限が近い順）】
       #{stock_list}
 
       【家族の状況（考慮必須）】
       #{family_status}
 
+      【ユーザーからの要望（最優先）】
+      #{@user_request.presence || '特になし（在庫からバランスよく提案してください）'}
+
       【条件】
-      - 在庫にあるものを優先的に使うこと（食品ロス削減）。
+      - ユーザーの要望があれば、それを最優先すること（例：和風、特定の食材使用など）。
       - 家族のアレルギー食材は絶対に使わないこと。
       - 家族の体調（授乳中など）に合わせた栄養素を含めること。
       - 出力は以下のフォーマットのみを返してください。余計な挨拶は不要です。
