@@ -4,6 +4,10 @@ class RecipesController < ApplicationController
     @recipes = current_user.recipes.order(created_at: :desc)
   end
 
+  def search
+    # 入力画面を表示するだけなので、処理は空でOK
+  end
+
   def generate
     # フォームから送られてきた "request" というパラメータを取得
     user_request = params[:user_request]
