@@ -1,138 +1,111 @@
-## 1. アプリ名（仮）
-**Family Chef（ファミリーシェフ）**
-～産後の妻と子供を守る、論理的献立・在庫管理アプリ～
+# Family Chef（ファミリーシェフ）
+**～産後の妻と子供を守る、論理的献立・在庫管理AIパートナー～**
 
-## 2. アプリの目的・コンセプト（Why）
-*   **背景:**
-    *   産休・育休による収入減（経済的制約）。
-    *   産後の母体や成長期の子供に必要な栄養管理の難しさ（栄養学的制約）。
-    *   冷蔵庫の余り物を把握しきれないことによる食品ロス。
-*   **目的:**
-    *   冷蔵庫の在庫を「論理的」に管理し、AIを用いて「栄養」と「節約」を両立する献立を提案することで、家事を担当する夫（自分）の意思決定コストを下げる。
+<!-- ここにトップ画面やロゴの画像を貼るとベストです -->
+<!-- ![Top Image](画像URL) -->
 
-## 3. ターゲットユーザー
-*   産後の妻や小さな子供を持ち、料理を担当する父親（自分）。
-*   節約と健康管理を両立したいが、献立を考えるのが苦手な人。
+## 1. アプリケーション概要
+「冷蔵庫の余り物」と「家族の健康状態」という2つの変数をかけ合わせ、**AIが最適な献立を提案する**アプリケーションです。
+産休・育休による収入変化（経済的制約）と、産後の母体や成長期の子供に必要な栄養管理（栄養学的制約）という、家庭内の複雑な課題をシステムで解決するために開発しました。
 
-## 4. 実装する機能（What）
+## 2. 開発背景（Why）
+第一子の誕生と妻の産休を機に、「節約」と「栄養管理」の両立が急務となりました。しかし、冷蔵庫の中身を把握しながら、アレルギーや体調を考慮して献立を考える作業は、脳のリソースを大きく消費します。
+そこで、**「在庫管理」と「献立決定」のプロセスを論理的に構造化し、生成AIにアウトソーシングする**ことで、家事の負担を減らしつつ、家族の健康を守りたいと考え、開発に至りました。
 
-ここは**「MVP（Minimum Viable Product：実用最小限の製品）」**から順に作ります。まずは★マーク（必須）の実装を目指しましょう。
+## 3. 主な機能
 
-### ① ユーザー・家族管理機能
-*   **★ユーザー登録/ログイン:**（Devise使用）
-*   **★家族ステータス登録:**
-    *   妻（例：授乳中、産後ケア期）
-    *   子供（例：離乳食中期、卵アレルギー）
-    *   ※このステータスがAIへのプロンプト（命令文）に自動で組み込まれます。
+### 🤖 AI献立提案（Serviceクラスによる実装）
+*   **在庫 × 家族ステータス:** 「冷蔵庫にある豚肉（期限間近）」と「授乳中の妻（鉄分必要）」といった情報を組み合わせ、AIが最適なレシピを提案します。
+*   **対話型リクエスト:** 「今日はガッツリ食べたい」「和風で」といったユーザーの気分も加味して生成可能です。
 
-### ② 食材在庫管理機能（多対多の学習用）
-*   **★食材（Ingredients）登録:**
-    *   冷蔵庫にある食材を登録・編集・削除。
-    *   カテゴリー（肉、野菜、調味料など）。
-    *   賞味期限（オプション：期限が近い順に表示するため）。
+### 🥦 在庫管理（多対多・Enum）
+*   **食材マスタ:** カテゴリー（肉、野菜など）ごとに整理されたマスタデータから選択登録。
+*   **状態管理:** 保存場所（冷蔵・冷凍・常温）を `Enum` で管理し、実態に即した管理を実現。
 
-### ③ AI献立提案機能（目玉機能）
-*   **★AIへの相談（Generate Recipe）:**
-    *   ボタンを押すと、OpenAI APIが以下の要素を掛け合わせてレシピを提案。
-        1.  **現在庫**（ここにあるものを使って！）
-        2.  **家族ステータス**（鉄分多めで！）
-        3.  **アレルギー情報**（卵は除去して！）
-*   **レシピ保存:** 気に入った提案をデータベースに保存。
+### 👨‍👩‍👧 家族ステータス管理
+*   家族ごとの「現在の体調（授乳中など）」や「アレルギー情報」を登録。これがプロンプトのコンテキスト（文脈）としてAIに渡されます。
 
-### ④ 献立・実績記録機能
-*   **作ったログ:** 提案されたレシピを「作った（食べた）」として記録。
-*   **★在庫の自動消費:** 「作った」とすると、使われた食材が在庫から自動で減る（※ここはロジックが難しいので、まずは手動削除でもOKですが、挑戦ポイントです）。
+## 4. 使用技術（Tech Stack）
 
-### ⑤ 節約実績の可視化（モチベーション）
-*   **コスト比較:** 外食した場合の概算コストと、自炊コストを比較し、「今月〇〇円節約しました」と表示。
+*   **Backend:** Ruby 3.2 / Ruby on Rails 7.1
+*   **Frontend:** Tailwind CSS (v4) / JavaScript (Stimulus)
+*   **Database:** MySQL 8.0
+*   **Infrastructure:** (ローカル開発中 / Render予定)
+*   **API:** OpenAI API (gpt-4o-mini)
+*   **Tools:** Docker / RuboCop / Git / GitHub
 
----
+## 5. 技術的なこだわり・挑戦（Technical Highlights）
 
-## 5. 技術スタック（How）
-*   **Backend:** Ruby on Rails 7
-*   **Frontend:** HTML/CSS (Tailwind CSS), JavaScript (Stimulus)
-*   **Database:** PostgreSQL
-*   **Infra:** Render (デプロイ経験済みのため) or ローカル環境のみでも可
-*   **API:** OpenAI API
+### ① 複雑なデータ構造の正規化（多対多）
+「レシピ」と「食材」の関係を適切に表現するため、中間テーブル `RecipeIngredients` を用いた**多対多（Many-to-Many）のリレーション**を設計しました。
+スクールのカリキュラム範囲を超え、ER図を書き直してデータの整合性を担保しました。
 
----
+### ② Serviceクラスによる「Fat Controller」の回避
+OpenAI APIとの通信やプロンプト生成ロジックをコントローラーに記述すると肥大化するため、**`MenuGeneratorService` クラス**を独自に定義し、ビジネスロジックを切り出しました。これにより、保守性と可読性を高めています。
 
-## 6. データモデル設計（ER図の準備）
-**ここが最大の学習ポイントです。**
+### ③ N+1問題の解消とパフォーマンス意識
+在庫一覧画面において、食材データ（Ingredient）へのアクセスがN+1問題を引き起こすことをログで検知し、`includes` メソッドを用いてEager Loading（事前読み込み）を実装しました。
 
-以下のテーブルが必要になりそうです。
+### ④ 最新技術へのキャッチアップ
+CSSフレームワークには最新の **Tailwind CSS v4** を採用。従来の `tailwind.config.js` ではなくCSSネイティブな設定方法を公式ドキュメントで調査し、導入しました。
 
-1.  **Users:** ユーザー（パパ）
-2.  **FamilyProfiles:** 家族の体調・アレルギー情報
-3.  **Ingredients:** 食材マスタ（じゃがいも、人参...）
-4.  **Stocks:** ユーザーが今持っている在庫（UserとIngredientの中間テーブルに近い）
-5.  **Recipes:** 提案・保存されたレシピ
-6.  **RecipeIngredients:** レシピと食材を結ぶ**中間テーブル（多対多）**
+### ⑤ 静的解析ツール（RuboCop）の導入
+チーム開発を見据え、コードの品質を一定に保つためにRuboCopを導入。自動修正だけでなく、メソッドの行数制限などの警告を通じてリーダブルコードを意識した実装を行っています。
 
----
-
-## 7. ER図
+## 6. データベース設計（ER図）
 
 ```mermaid
 erDiagram
-    Users ||--o{ FamilyMembers : "管理する"
-    Users ||--o{ Stocks : "所有する"
-    Users ||--o{ Recipes : "保存する"
+    Users ||--o{ FamilyMembers : "管理"
+    Users ||--o{ Stocks : "所有"
+    Users ||--o{ Recipes : "保存"
 
-    Ingredients ||--o{ Stocks : "在庫になる"
-    Ingredients ||--o{ RecipeIngredients : "使用される"
-    Recipes ||--o{ RecipeIngredients : "構成される"
+    Ingredients ||--o{ Stocks : "在庫化"
+    Ingredients ||--o{ RecipeIngredients : "使用"
+    Recipes ||--o{ RecipeIngredients : "構成"
 
-    %% ユーザーテーブル（パパ）
     Users {
         bigint id PK
         string email
-        string encrypted_password
         string nickname
     }
 
-    %% 家族情報（AIプロンプトの種）
     FamilyMembers {
         bigint id PK
-        bigint user_id FK
-        string name "名前（ママ・長男など）"
-        string status "状態（授乳中・育ち盛り）"
-        text allergy_info "アレルギー情報"
+        string name "名前"
+        string status "体調(AI用)"
+        text allergy_info "アレルギー"
     }
 
-    %% 食材マスタ（世の中に存在する食材リスト）
     Ingredients {
         bigint id PK
-        string name "食材名（人参、豚肉など）"
-        string category "分類（野菜、肉など）"
+        string name "食材名"
+        string category "分類"
     }
 
-    %% 在庫テーブル（冷蔵庫の中身）
     Stocks {
         bigint id PK
-        bigint user_id FK
-        bigint ingredient_id FK "食材への参照"
         integer quantity "数量"
-        date expiration_date "賞味期限"
+        date expiration_date "期限"
+        integer storage "保存場所(Enum)"
     }
 
-    %% レシピテーブル（AIが提案したもの）
     Recipes {
         bigint id PK
-        bigint user_id FK
         string title "料理名"
-        text description "作り方・AIコメント"
-        integer cost_saving "推定節約額"
+        text description "内容"
     }
 
-    %% ★中間テーブル（レシピと食材のつなぎ役）
     RecipeIngredients {
         bigint id PK
         bigint recipe_id FK
         bigint ingredient_id FK
-        string quantity "使用量（例: 2個）"
     }
 ```
+
+## 7. 今後の展望
+*   **在庫の自動消費機能:** レシピを作成（調理）した際、使用された食材分を在庫から自動で減算するロジックの実装。
+*   **コスト計算機能:** 「自炊によっていくら節約できたか」を可視化する機能。
 
 ---
 
