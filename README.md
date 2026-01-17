@@ -3,6 +3,9 @@
 
 <!-- ここにトップ画面やロゴの画像を貼るとベストです -->
 <!-- ![Top Image](画像URL) -->
+| ①冷蔵庫管理（カテゴリー別） | ②気分に合わせてリクエスト | ③AI献立提案（チャット風） |
+| :---: | :---: | :---: |
+| <img src="https://github.com/user-attachments/assets/ef9815eb-6127-4705-916f-2337e8854691" width="250"> | <img src="https://github.com/user-attachments/assets/aa95ee5d-9a58-4081-a0ca-c31443de6b31" width="250"> | <img src="https://github.com/user-attachments/assets/d989c55e-8f1f-436b-94aa-0611121ba9a6" width="250"> |
 
 ## 1. アプリケーション概要
 「冷蔵庫の余り物」と「家族の健康状態」という2つの変数をかけ合わせ、**AIが最適な献立を提案する**アプリケーションです。
